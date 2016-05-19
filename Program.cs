@@ -1,15 +1,11 @@
-﻿using System;
-using System.IO;
-
-namespace FourInARow
+﻿namespace FourInARow
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             ////Actual running  
             (new Session()).Run();
-            
         }
     }
 }

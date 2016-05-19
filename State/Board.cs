@@ -5,40 +5,19 @@ using FourInARow.Enums;
 namespace FourInARow.State
 {
     /// <summary>
-    /// A game board
+    ///     A game board
     /// </summary>
     public class Board
     {
         /// <summary>
-        /// Gets the board array.
+        ///     Initializes a new instance of the <see cref="Board" /> class.
         /// </summary>
-        /// <value>
-        /// The board array.
-        /// </value>
-        public int[,] BoardArray { get; private set; }
-        /// <summary>
-        /// Gets or sets my bot identifier.
-        /// </summary>
-        /// <value>
-        /// My bot identifier.
-        /// </value>
-        public int MyBotId { get; set; }
+        public Board()
+        {
+        }
 
         /// <summary>
-        /// Gets or sets a value indicating whether [my turn].
-        /// </summary>
-        /// <value>
-        ///   <c>true</c> if [my turn]; otherwise, <c>false</c>.
-        /// </value>
-        public bool MyTurn { get; set; }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Board"/> class.
-        /// </summary>
-        public Board() { }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Board"/> class.
+        ///     Initializes a new instance of the <see cref="Board" /> class.
         /// </summary>
         public Board(Board board)
         {
@@ -48,7 +27,31 @@ namespace FourInARow.State
         }
 
         /// <summary>
-        /// Places the move.
+        ///     Gets the board array.
+        /// </summary>
+        /// <value>
+        ///     The board array.
+        /// </value>
+        public int[,] BoardArray { get; private set; }
+
+        /// <summary>
+        ///     Gets or sets my bot identifier.
+        /// </summary>
+        /// <value>
+        ///     My bot identifier.
+        /// </value>
+        public int MyBotId { get; set; }
+
+        /// <summary>
+        ///     Gets or sets a value indicating whether [my turn].
+        /// </summary>
+        /// <value>
+        ///     <c>true</c> if [my turn]; otherwise, <c>false</c>.
+        /// </value>
+        public bool MyTurn { get; set; }
+
+        /// <summary>
+        ///     Places the move.
         /// </summary>
         /// <param name="col">The col.</param>
         /// <returns></returns>
@@ -57,27 +60,26 @@ namespace FourInARow.State
             var movePlacePosition = CanPlaceMovePosition(col);
             if (movePlacePosition != -1)
             {
-                if(MyTurn)
+                if (MyTurn)
                     BoardArray[movePlacePosition, col] = MyBotId;
                 else
-                    BoardArray[movePlacePosition, col] = 0-MyBotId;
+                    BoardArray[movePlacePosition, col] = 0 - MyBotId;
                 return true;
             }
             return false;
         }
 
         /// <summary>
-        /// Determines whether this instance [can place move position] the specified col.
-        /// 
+        ///     Determines whether this instance [can place move position] the specified col.
         /// </summary>
         /// <param name="col">The col.</param>
         /// <returns>-1= can't move, any other is the position it will move to</returns>
         private int CanPlaceMovePosition(int col)
         {
-            int openPosition = -1;
-            for (int i = 5; i >= 0; i--)
+            var openPosition = -1;
+            for (var i = 5; i >= 0; i--)
             {
-                PositionState stateOfPosition = PositionState(i, col);
+                var stateOfPosition = PositionState(i, col);
                 if (stateOfPosition == Enums.PositionState.Free)
                 {
                     openPosition = i;
@@ -88,7 +90,7 @@ namespace FourInARow.State
         }
 
         /// <summary>
-        /// Updates the specified board array.
+        ///     Updates the specified board array.
         /// </summary>
         /// <param name="boardArray">The board array.</param>
         public void Update(int[,] boardArray)
@@ -97,7 +99,7 @@ namespace FourInARow.State
         }
 
         /// <summary>
-        /// States the specified column field state
+        ///     States the specified column field state
         /// </summary>
         /// <param name="col">The col.</param>
         /// <param name="row">The row.</param>
@@ -108,15 +110,15 @@ namespace FourInARow.State
             if (BoardArray[row, col] == MyBotId) return Enums.PositionState.Me;
             return Enums.PositionState.Opponent;
         }
-        
+
 
         ////////////////////UTILITY CALCULATOR LOOPS///////////////////
         public int Utility()
         {
-            int utility = 0;
-            for (int row = 5; row > -1; row--)
+            var utility = 0;
+            for (var row = 5; row > -1; row--)
             {
-                for (int col = 0; col < 7; col++)
+                for (var col = 0; col < 7; col++)
                 {
                     if (row > 2)
                     {
@@ -151,9 +153,9 @@ namespace FourInARow.State
 
         public PositionState WinningPlayer()
         {
-            for (int row = 5; row > -1; row--)
+            for (var row = 5; row > -1; row--)
             {
-                for (int col = 0; col < 7; col++)
+                for (var col = 0; col < 7; col++)
                 {
                     if (row > 2)
                     {
@@ -198,12 +200,12 @@ namespace FourInARow.State
             }
             return Enums.PositionState.Free;
         }
-        
+
         //////////////////////////////////////////////////////////////
-        
+
         /////////////////UTILITY CALCULATORS///////////////////////
         /// <summary>
-        /// Returns utility of checked diagonal right leaning from bottom
+        ///     Returns utility of checked diagonal right leaning from bottom
         /// </summary>
         /// <param name="row"></param>
         /// <param name="col"></param>
@@ -214,7 +216,7 @@ namespace FourInARow.State
             if (thisState == Enums.PositionState.Free)
                 return 0;
 
-            var utility = PlayerUtility(thisState,1);
+            var utility = PlayerUtility(thisState, 1);
             try
             {
                 if (PositionState(row - 1, col + 1) == thisState)
@@ -236,8 +238,9 @@ namespace FourInARow.State
             }
             return utility;
         }
+
         /// <summary>
-        /// Diagonal from leaning left from bottom utility
+        ///     Diagonal from leaning left from bottom utility
         /// </summary>
         /// <param name="row"></param>
         /// <param name="col"></param>
@@ -248,7 +251,8 @@ namespace FourInARow.State
             if (thisState == Enums.PositionState.Free)
                 return 0;
 
-            var utility = PlayerUtility(thisState, 1); ;
+            var utility = PlayerUtility(thisState, 1);
+            ;
             try
             {
                 if (PositionState(row - 1, col - 1) == thisState)
@@ -270,8 +274,9 @@ namespace FourInARow.State
             }
             return utility;
         }
+
         /// <summary>
-        /// Utility of verts from bottom
+        ///     Utility of verts from bottom
         /// </summary>
         /// <param name="row"></param>
         /// <param name="col"></param>
@@ -282,7 +287,8 @@ namespace FourInARow.State
             if (thisState == Enums.PositionState.Free)
                 return 0;
 
-            var utility = PlayerUtility(thisState, 1); ;
+            var utility = PlayerUtility(thisState, 1);
+            ;
             try
             {
                 if (PositionState(row - 1, col) == thisState)
@@ -304,8 +310,9 @@ namespace FourInARow.State
             }
             return utility;
         }
+
         /// <summary>
-        /// Utility of horizontals from bottom left
+        ///     Utility of horizontals from bottom left
         /// </summary>
         /// <param name="row"></param>
         /// <param name="col"></param>
@@ -316,7 +323,8 @@ namespace FourInARow.State
             if (thisState == Enums.PositionState.Free)
                 return 0;
 
-            var utility = PlayerUtility(thisState, 1); ;
+            var utility = PlayerUtility(thisState, 1);
+            ;
             try
             {
                 if (PositionState(row, col + 1) == thisState)
@@ -338,15 +346,13 @@ namespace FourInARow.State
             }
             return utility;
         }
+
         /////////////////////////////////////////////////////
-
-
-
 
 
         ////////////////POSITION WINNER CHECKERS//////////////
         /// <summary>
-        /// Checks the diag right from bottom.
+        ///     Checks the diag right from bottom.
         /// </summary>
         /// <param name="row">The row.</param>
         /// <param name="col">The col.</param>
@@ -363,8 +369,9 @@ namespace FourInARow.State
                 return true;
             return false;
         }
+
         /// <summary>
-        /// Checks the diag left from bottom.
+        ///     Checks the diag left from bottom.
         /// </summary>
         /// <param name="row">The row.</param>
         /// <param name="col">The col.</param>
@@ -381,8 +388,9 @@ namespace FourInARow.State
                 return true;
             return false;
         }
+
         /// <summary>
-        /// Checks the vert from bottom.
+        ///     Checks the vert from bottom.
         /// </summary>
         /// <param name="row">The row.</param>
         /// <param name="col">The col.</param>
@@ -399,8 +407,9 @@ namespace FourInARow.State
                 return true;
             return false;
         }
+
         /// <summary>
-        /// Checks the horizontal from left.
+        ///     Checks the horizontal from left.
         /// </summary>
         /// <param name="row">The row.</param>
         /// <param name="col">The col.</param>
@@ -417,21 +426,20 @@ namespace FourInARow.State
                 return true;
             return false;
         }
-        ///////////////////////////////////////////////////////////////
-        
 
+        ///////////////////////////////////////////////////////////////
 
 
         /// <summary>
-        /// Prints out to string
+        ///     Prints out to string
         /// </summary>
         /// <returns></returns>
         public override string ToString()
         {
-            StringBuilder builder = new StringBuilder();
-            for (int row = 0; row < 6; row++)
+            var builder = new StringBuilder();
+            for (var row = 0; row < 6; row++)
             {
-                for (int col = 0; col < 7; col++)
+                for (var col = 0; col < 7; col++)
                 {
                     var player = PositionState(row, col);
                     switch (player)

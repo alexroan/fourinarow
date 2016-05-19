@@ -2,7 +2,8 @@
 {
     public enum PositionState
     {
-        Free, Me, Opponent
+        Free,
+        Me,
+        Opponent
     }
-
 }

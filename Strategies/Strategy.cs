@@ -1,25 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using FourInARow.Enums;
 using FourInARow.State;
 
 namespace FourInARow.Strategies
 {
     /// <summary>
-    /// Base strategy class
+    ///     Base strategy class
     /// </summary>
     public class Strategy : IStrategy
     {
         /// <summary>
-        /// Max depth
-        /// </summary>
-        protected int MaxDepth { get; set; }
-
-        /// <summary>
-        /// Constructor
+        ///     Constructor
         /// </summary>
         /// <param name="maxDepth"></param>
         public Strategy(int maxDepth)
@@ -28,7 +20,12 @@ namespace FourInARow.Strategies
         }
 
         /// <summary>
-        /// Generates next move
+        ///     Max depth
+        /// </summary>
+        protected int MaxDepth { get; set; }
+
+        /// <summary>
+        ///     Generates next move
         /// </summary>
         /// <param name="board"></param>
         /// <returns></returns>
@@ -38,17 +35,17 @@ namespace FourInARow.Strategies
         }
 
         /// <summary>
-        /// Generates available children
+        ///     Generates available children
         /// </summary>
         /// <param name="state"></param>
         /// <returns></returns>
         protected Dictionary<int, Board> Children(Board state)
         {
             //key is action (e,i the column move)
-            Dictionary<int, Board> children = new Dictionary<int, Board>();
-            for (int i = 0; i < 7; i++)
+            var children = new Dictionary<int, Board>();
+            for (var i = 0; i < 7; i++)
             {
-                Board newBoard = new Board(state);
+                var newBoard = new Board(state);
                 if (newBoard.PlaceMove(i))
                 {
                     children.Add(i, newBoard);
@@ -58,13 +55,13 @@ namespace FourInARow.Strategies
         }
 
         /// <summary>
-        /// Determines whether the specified state is terminal.
+        ///     Determines whether the specified state is terminal.
         /// </summary>
         /// <param name="state">The state.</param>
         /// <returns></returns>
         protected bool IsTerminal(Board state)
         {
-            PositionState winner = state.WinningPlayer();
+            var winner = state.WinningPlayer();
             if (winner != PositionState.Free)
                 return true;
             return false;
