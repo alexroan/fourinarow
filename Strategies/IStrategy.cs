@@ -1,4 +1,6 @@
-﻿namespace FourInARow.Strategies
+﻿using FourInARow.State;
+
+namespace FourInARow.Strategies
 {
     public interface IStrategy
     {

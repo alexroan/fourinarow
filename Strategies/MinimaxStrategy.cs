@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using FourInARow.State;
 
 namespace FourInARow.Strategies
 {

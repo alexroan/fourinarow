@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FourInARow.Enums;
+using FourInARow.State;
 
 namespace FourInARow.Strategies
 {
