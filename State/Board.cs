@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using FourInARow.Enums;
 
@@ -229,6 +231,10 @@ namespace FourInARow.State
                         {
                             utility += PlayerUtility(thisState, 10000);
                         }
+                        else if (PositionState(row - 3, col + 3) == Enums.PositionState.Free)
+                        {
+                            utility += PlayerUtility(thisState, 500);
+                        }
                     }
                 }
             }
@@ -238,6 +244,7 @@ namespace FourInARow.State
             }
             return utility;
         }
+
 
         /// <summary>
         ///     Diagonal from leaning left from bottom utility
@@ -252,7 +259,7 @@ namespace FourInARow.State
                 return 0;
 
             var utility = PlayerUtility(thisState, 1);
-            ;
+            
             try
             {
                 if (PositionState(row - 1, col - 1) == thisState)
@@ -264,6 +271,10 @@ namespace FourInARow.State
                         if (PositionState(row - 3, col - 3) == thisState)
                         {
                             utility += PlayerUtility(thisState, 10000);
+                        }
+                        else if (PositionState(row - 3, col - 3) == Enums.PositionState.Free)
+                        {
+                            utility += PlayerUtility(thisState, 500);
                         }
                     }
                 }
@@ -288,7 +299,7 @@ namespace FourInARow.State
                 return 0;
 
             var utility = PlayerUtility(thisState, 1);
-            ;
+            
             try
             {
                 if (PositionState(row - 1, col) == thisState)
@@ -300,6 +311,10 @@ namespace FourInARow.State
                         if (PositionState(row - 3, col) == thisState)
                         {
                             utility += PlayerUtility(thisState, 10000);
+                        }
+                        else if (PositionState(row - 3, col) == Enums.PositionState.Free)
+                        {
+                            utility += PlayerUtility(thisState, 500);
                         }
                     }
                 }
@@ -324,7 +339,7 @@ namespace FourInARow.State
                 return 0;
 
             var utility = PlayerUtility(thisState, 1);
-            ;
+            
             try
             {
                 if (PositionState(row, col + 1) == thisState)
@@ -337,6 +352,10 @@ namespace FourInARow.State
                         {
                             utility += PlayerUtility(thisState, 10000);
                         }
+                        else if (PositionState(row, col + 3) == Enums.PositionState.Free)
+                        {
+                            utility += PlayerUtility(thisState, 500);
+                        }
                     }
                 }
             }
@@ -346,7 +365,6 @@ namespace FourInARow.State
             }
             return utility;
         }
-
         /////////////////////////////////////////////////////
 
 
