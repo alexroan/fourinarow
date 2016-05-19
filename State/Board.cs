@@ -236,6 +236,11 @@ namespace FourInARow.State
                             utility += PlayerUtility(thisState, 500);
                         }
                     }
+                    else if (PositionState(row - 2, col + 2) == Enums.PositionState.Free &&
+                             PositionState(row - 3, col + 3) == Enums.PositionState.Free)
+                    {
+                        utility += PlayerUtility(thisState, 200);
+                    }
                 }
             }
             catch (Exception)
@@ -277,6 +282,11 @@ namespace FourInARow.State
                             utility += PlayerUtility(thisState, 500);
                         }
                     }
+                    else if (PositionState(row - 2, col - 2) == Enums.PositionState.Free &&
+                             PositionState(row - 3, col - 3) == Enums.PositionState.Free)
+                    {
+                        utility += PlayerUtility(thisState, 200);
+                    }
                 }
             }
             catch (Exception)
@@ -317,6 +327,11 @@ namespace FourInARow.State
                             utility += PlayerUtility(thisState, 500);
                         }
                     }
+                    else if (PositionState(row - 2, col) == Enums.PositionState.Free &&
+                             PositionState(row - 3, col) == Enums.PositionState.Free)
+                    {
+                        utility += PlayerUtility(thisState, 200);
+                    }
                 }
             }
             catch (Exception)
@@ -356,6 +371,11 @@ namespace FourInARow.State
                         {
                             utility += PlayerUtility(thisState, 500);
                         }
+                    }
+                    else if (PositionState(row, col + 2) == Enums.PositionState.Free &&
+                             PositionState(row, col + 3) == Enums.PositionState.Free)
+                    {
+                        utility += PlayerUtility(thisState, 200);
                     }
                 }
             }
