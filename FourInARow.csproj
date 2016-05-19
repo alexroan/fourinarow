@@ -52,6 +52,7 @@
     <Compile Include="Strategies\AlphaBetaMinimaxStrategy.cs" />
     <Compile Include="Strategies\IStrategy.cs" />
     <Compile Include="Strategies\MinimaxStrategy.cs" />
+    <Compile Include="Strategies\Strategy.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

@@ -5,17 +5,27 @@ using System.Linq;
 namespace FourInARow.Strategies
 {
     /// <summary>
-    /// 
+    /// Minimax strategy
     /// </summary>
-    public class MinimaxStrategy : IStrategy
+    public class MinimaxStrategy : Strategy
     {
-
+        /// <summary>
+        /// max depth of minimax strategy
+        /// </summary>
         private static readonly int _maxDepth = 5;
+
+        /// <summary>
+        /// Initializes new instance of Minimax with max depth
+        /// </summary>
+        /// <param name="maxDepth"></param>
+        public MinimaxStrategy(int maxDepth) : base(maxDepth)
+        {
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MinimaxStrategy"/> class.
         /// </summary>
-        public MinimaxStrategy()
+        public MinimaxStrategy() : this(_maxDepth)
         {
         }
 
@@ -24,18 +34,18 @@ namespace FourInARow.Strategies
         /// </summary>
         /// <param name="board">The board.</param>
         /// <returns></returns>
-        public int NextMove(Board board)
+        public override int NextMove(Board board)
         {
             board.MyTurn = false;
             return Minimax(board);
         }
 
         /// <summary>
-        /// Minimax algorithm (I think)
+        /// Minimax algorithm
         /// </summary>
         /// <param name="state">The state.</param>
         /// <returns></returns>
-        private int Minimax(Board state)
+        protected int Minimax(Board state)
         {
             var children = Children(state);
             var childKeys = children.Keys;
@@ -78,11 +88,11 @@ namespace FourInARow.Strategies
         /// <param name="state">The state.</param>
         /// <param name="currentDepth"></param>
         /// <returns></returns>
-        private int MaxValue(Board state, int currentDepth)
+        protected int MaxValue(Board state, int currentDepth)
         {
-            if (IsTerminal(state) || currentDepth == _maxDepth)
+            if (IsTerminal(state) || currentDepth == MaxDepth)
             {
-                return Utility(state);
+                return state.Utility();
             }
             int value = Int32.MinValue;
             currentDepth++;
@@ -101,11 +111,11 @@ namespace FourInARow.Strategies
         /// <param name="state">The state.</param>
         /// <param name="currentDepth"></param>
         /// <returns></returns>
-        private int MinValue(Board state, int currentDepth)
+        protected int MinValue(Board state, int currentDepth)
         {
-            if (IsTerminal(state) || currentDepth == _maxDepth)
+            if (IsTerminal(state) || currentDepth == MaxDepth)
             {
-                return Utility(state);
+                return state.Utility();
             }
             int value = Int32.MaxValue;
             currentDepth++;
@@ -116,45 +126,6 @@ namespace FourInARow.Strategies
                     value = maxval;
             }
             return value;
-        }
-
-        /// <summary>
-        /// Utilities the specified state.
-        /// </summary>
-        /// <param name="state">The state.</param>
-        /// <returns></returns>
-        /// <exception cref="NotImplementedException"></exception>
-        private int Utility(Board state)
-        {
-            return state.Utility();
-        }
-
-        private Dictionary<int, Board> Children(Board state)
-        {
-            //key is action (e,i the column move)
-            Dictionary<int, Board> children = new Dictionary<int, Board>();
-            for (int i = 0; i < 7; i++)
-            {
-                Board newBoard = new Board(state);
-                if (newBoard.PlaceMove(i))
-                {
-                    children.Add(i,newBoard);
-                }
-            }
-            return children;
-        }
-
-        /// <summary>
-        /// Determines whether the specified state is terminal.
-        /// </summary>
-        /// <param name="state">The state.</param>
-        /// <returns></returns>
-        private bool IsTerminal(Board state)
-        {
-            PositionState winner = state.WinningPlayer();
-            if (winner != PositionState.Free)
-                return true;
-            return false;
         }
     }
 }

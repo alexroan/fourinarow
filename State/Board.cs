@@ -1,9 +1,8 @@
 using System;
-using System.Collections.Generic;
-using System.Linq.Expressions;
 using System.Text;
+using FourInARow.Enums;
 
-namespace FourInARow
+namespace FourInARow.State
 {
     /// <summary>
     /// A game board
@@ -79,7 +78,7 @@ namespace FourInARow
             for (int i = 5; i >= 0; i--)
             {
                 PositionState stateOfPosition = PositionState(i, col);
-                if (stateOfPosition == FourInARow.PositionState.Free)
+                if (stateOfPosition == Enums.PositionState.Free)
                 {
                     openPosition = i;
                     break;
@@ -105,27 +104,14 @@ namespace FourInARow
         /// <returns></returns>
         public PositionState PositionState(int row, int col)
         {
-            if (BoardArray[row, col] == 0) return FourInARow.PositionState.Free;
-            if (BoardArray[row, col] == MyBotId) return FourInARow.PositionState.Me;
-            return FourInARow.PositionState.Opponent;
+            if (BoardArray[row, col] == 0) return Enums.PositionState.Free;
+            if (BoardArray[row, col] == MyBotId) return Enums.PositionState.Me;
+            return Enums.PositionState.Opponent;
         }
-
-        /// <summary>
-        /// Caclulates the winner of this state.
-        /// </summary>
-        /// <returns>Free if not winner, otherwise the winner</returns>
-        public PositionState WinningPlayer()
-        {
-            return AllWinner();
-        }
-
-        public int Utility()
-        {
-            return AllUtility();
-        }
+        
 
         ////////////////////UTILITY CALCULATOR LOOPS///////////////////
-        private int AllUtility()
+        public int Utility()
         {
             int utility = 0;
             for (int row = 5; row > -1; row--)
@@ -163,7 +149,7 @@ namespace FourInARow
             return utility;
         }
 
-        private PositionState AllWinner()
+        public PositionState WinningPlayer()
         {
             for (int row = 5; row > -1; row--)
             {
@@ -210,7 +196,7 @@ namespace FourInARow
                     }
                 }
             }
-            return FourInARow.PositionState.Free;
+            return Enums.PositionState.Free;
         }
         
         //////////////////////////////////////////////////////////////
@@ -225,7 +211,7 @@ namespace FourInARow
         private int DiagRightFromBottomUtility(int row, int col)
         {
             var thisState = PositionState(row, col);
-            if (thisState == FourInARow.PositionState.Free)
+            if (thisState == Enums.PositionState.Free)
                 return 0;
 
             var utility = PlayerUtility(thisState,1);
@@ -259,7 +245,7 @@ namespace FourInARow
         private int DiagLeftFromBottomUtility(int row, int col)
         {
             var thisState = PositionState(row, col);
-            if (thisState == FourInARow.PositionState.Free)
+            if (thisState == Enums.PositionState.Free)
                 return 0;
 
             var utility = PlayerUtility(thisState, 1); ;
@@ -293,7 +279,7 @@ namespace FourInARow
         private int VertFromBottomUtility(int row, int col)
         {
             var thisState = PositionState(row, col);
-            if (thisState == FourInARow.PositionState.Free)
+            if (thisState == Enums.PositionState.Free)
                 return 0;
 
             var utility = PlayerUtility(thisState, 1); ;
@@ -327,7 +313,7 @@ namespace FourInARow
         private int HorizontalFromBottomLeftUtility(int row, int col)
         {
             var thisState = PositionState(row, col);
-            if (thisState == FourInARow.PositionState.Free)
+            if (thisState == Enums.PositionState.Free)
                 return 0;
 
             var utility = PlayerUtility(thisState, 1); ;
@@ -368,7 +354,7 @@ namespace FourInARow
         private bool DiagRightFromBottomWinner(int row, int col)
         {
             var thisState = PositionState(row, col);
-            if (thisState == FourInARow.PositionState.Free)
+            if (thisState == Enums.PositionState.Free)
                 return false;
 
             if (PositionState(row - 1, col + 1) == thisState
@@ -386,7 +372,7 @@ namespace FourInARow
         private bool DiagLeftFromBottomWinner(int row, int col)
         {
             var thisState = PositionState(row, col);
-            if (thisState == FourInARow.PositionState.Free)
+            if (thisState == Enums.PositionState.Free)
                 return false;
 
             if (PositionState(row - 1, col - 1) == thisState
@@ -404,7 +390,7 @@ namespace FourInARow
         private bool VertFromBottomWinner(int row, int col)
         {
             var thisState = PositionState(row, col);
-            if (thisState == FourInARow.PositionState.Free)
+            if (thisState == Enums.PositionState.Free)
                 return false;
 
             if (PositionState(row - 1, col) == thisState
@@ -422,7 +408,7 @@ namespace FourInARow
         private bool HorizontalFromLeftWinner(int row, int col)
         {
             var thisState = PositionState(row, col);
-            if (thisState == FourInARow.PositionState.Free)
+            if (thisState == Enums.PositionState.Free)
                 return false;
 
             if (PositionState(row, col + 1) == thisState
@@ -450,13 +436,13 @@ namespace FourInARow
                     var player = PositionState(row, col);
                     switch (player)
                     {
-                        case FourInARow.PositionState.Free:
+                        case Enums.PositionState.Free:
                             builder.Append("_ ");
                             break;
-                        case FourInARow.PositionState.Me:
+                        case Enums.PositionState.Me:
                             builder.Append("X ");
                             break;
-                        case FourInARow.PositionState.Opponent:
+                        case Enums.PositionState.Opponent:
                             builder.Append("O ");
                             break;
                     }
@@ -474,9 +460,9 @@ namespace FourInARow
         /// <returns></returns>
         private int PlayerUtility(PositionState player, int utility)
         {
-            if (player == FourInARow.PositionState.Me)
+            if (player == Enums.PositionState.Me)
                 return utility;
-            if (player == FourInARow.PositionState.Opponent)
+            if (player == Enums.PositionState.Opponent)
                 return -utility;
             return 0;
         }

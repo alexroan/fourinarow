@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using FourInARow.State;
 using FourInARow.Strategies;
 
 namespace FourInARow

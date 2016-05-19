@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace FourInARow
+﻿namespace FourInARow.Enums
 {
     public enum PositionState
     {
