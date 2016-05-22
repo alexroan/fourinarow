@@ -1,4 +1,5 @@
 using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -206,184 +207,130 @@ namespace FourInARow.State
         //////////////////////////////////////////////////////////////
 
         /////////////////UTILITY CALCULATORS///////////////////////
+
         /// <summary>
-        ///     Returns utility of checked diagonal right leaning from bottom
+        /// calculates the utility of a given list of states
+        /// </summary>
+        /// <param name="states"></param>
+        /// <returns></returns>
+        public int CalculateUtilityFromStateList(List<PositionState> states)
+        {
+            var utility = 0;
+            var distinctStates = states.Distinct().ToList();
+            //Only one type of state occupies the spaces. Either a win, or all FREE
+            if (distinctStates.Count == 1)
+            {
+                if (distinctStates[0] != Enums.PositionState.Free)
+                    utility = PlayerUtility(distinctStates[0], 100000);
+            }
+            //if 2 types of states are present
+            else if (distinctStates.Count == 2)
+            {
+                //if any are free then 4 in a row can be made. How close?
+                if (distinctStates.Contains(Enums.PositionState.Free))
+                {
+                    var playerStates = states.FindAll(s => s != Enums.PositionState.Free);
+                    if (playerStates.Count == 1)
+                        utility = PlayerUtility(playerStates[0], 1);
+                    else if (playerStates.Count == 2)
+                        utility = PlayerUtility(playerStates[0], 200);
+                    else if (playerStates.Count == 3)
+                        utility = PlayerUtility(playerStates[0], 500);
+                }
+            }
+            return utility;
+        }
+
+        /// <summary>
+        /// Diagonal leaning right. taken from the bottom left
         /// </summary>
         /// <param name="row"></param>
         /// <param name="col"></param>
         /// <returns></returns>
         private int DiagRightFromBottomUtility(int row, int col)
         {
-            var thisState = PositionState(row, col);
-            if (thisState == Enums.PositionState.Free)
-                return 0;
-
-            var utility = PlayerUtility(thisState, 1);
-            try
+            List<PositionState> states = new List<PositionState>();
+            for (int i = 0; i < 4; i++)
             {
-                if (PositionState(row - 1, col + 1) == thisState)
+                try
                 {
-                    utility += PlayerUtility(thisState, 10);
-                    if (PositionState(row - 2, col + 2) == thisState)
-                    {
-                        utility += PlayerUtility(thisState, 100);
-                        if (PositionState(row - 3, col + 3) == thisState)
-                        {
-                            utility += PlayerUtility(thisState, 100000);
-                        }
-                        else if (PositionState(row - 3, col + 3) == Enums.PositionState.Free)
-                        {
-                            utility += PlayerUtility(thisState, 500);
-                        }
-                    }
-                    else if (PositionState(row - 2, col + 2) == Enums.PositionState.Free &&
-                             PositionState(row - 3, col + 3) == Enums.PositionState.Free)
-                    {
-                        utility += PlayerUtility(thisState, 200);
-                    }
+                    states.Add(PositionState(row - i, col + i));
+                }
+                catch (Exception)
+                {
+                    // ignore
                 }
             }
-            catch (Exception)
-            {
-                return utility;
-            }
-            return utility;
+            return CalculateUtilityFromStateList(states);
         }
 
-
         /// <summary>
-        ///     Diagonal from leaning left from bottom utility
+        /// Diagonal utility leaning left from bottom.
         /// </summary>
         /// <param name="row"></param>
         /// <param name="col"></param>
         /// <returns></returns>
         private int DiagLeftFromBottomUtility(int row, int col)
         {
-            var thisState = PositionState(row, col);
-            if (thisState == Enums.PositionState.Free)
-                return 0;
-
-            var utility = PlayerUtility(thisState, 1);
-            
-            try
+            List<PositionState> states = new List<PositionState>();
+            for (int i = 0; i < 4; i++)
             {
-                if (PositionState(row - 1, col - 1) == thisState)
+                try
                 {
-                    utility += PlayerUtility(thisState, 10);
-                    if (PositionState(row - 2, col - 2) == thisState)
-                    {
-                        utility += PlayerUtility(thisState, 100);
-                        if (PositionState(row - 3, col - 3) == thisState)
-                        {
-                            utility += PlayerUtility(thisState, 100000);
-                        }
-                        else if (PositionState(row - 3, col - 3) == Enums.PositionState.Free)
-                        {
-                            utility += PlayerUtility(thisState, 500);
-                        }
-                    }
-                    else if (PositionState(row - 2, col - 2) == Enums.PositionState.Free &&
-                             PositionState(row - 3, col - 3) == Enums.PositionState.Free)
-                    {
-                        utility += PlayerUtility(thisState, 200);
-                    }
+                    states.Add(PositionState(row - i, col - i));
+                }
+                catch (Exception)
+                {
+                    // ignore
                 }
             }
-            catch (Exception)
-            {
-                return utility;
-            }
-            return utility;
+            return CalculateUtilityFromStateList(states);
         }
 
         /// <summary>
-        ///     Utility of verts from bottom
+        /// Vertical utility from bottom
         /// </summary>
         /// <param name="row"></param>
         /// <param name="col"></param>
         /// <returns></returns>
         private int VertFromBottomUtility(int row, int col)
         {
-            var thisState = PositionState(row, col);
-            if (thisState == Enums.PositionState.Free)
-                return 0;
-
-            var utility = PlayerUtility(thisState, 1);
-            
-            try
+            List<PositionState> states = new List<PositionState>();
+            for (int i = 0; i < 4; i++)
             {
-                if (PositionState(row - 1, col) == thisState)
+                try
                 {
-                    utility += PlayerUtility(thisState, 10);
-                    if (PositionState(row - 2, col) == thisState)
-                    {
-                        utility += PlayerUtility(thisState, 100);
-                        if (PositionState(row - 3, col) == thisState)
-                        {
-                            utility += PlayerUtility(thisState, 100000);
-                        }
-                        else if (PositionState(row - 3, col) == Enums.PositionState.Free)
-                        {
-                            utility += PlayerUtility(thisState, 500);
-                        }
-                    }
-                    else if (PositionState(row - 2, col) == Enums.PositionState.Free &&
-                             PositionState(row - 3, col) == Enums.PositionState.Free)
-                    {
-                        utility += PlayerUtility(thisState, 200);
-                    }
+                    states.Add(PositionState(row - i, col));
+                }
+                catch (Exception)
+                {
+                    // ignore
                 }
             }
-            catch (Exception)
-            {
-                return utility;
-            }
-            return utility;
+            return CalculateUtilityFromStateList(states);
         }
 
         /// <summary>
-        ///     Utility of horizontals from bottom left
+        /// Horizontal utility from bottom left
         /// </summary>
         /// <param name="row"></param>
         /// <param name="col"></param>
         /// <returns></returns>
         private int HorizontalFromBottomLeftUtility(int row, int col)
         {
-            var thisState = PositionState(row, col);
-            if (thisState == Enums.PositionState.Free)
-                return 0;
-
-            var utility = PlayerUtility(thisState, 1);
-            
-            try
+            List<PositionState> states = new List<PositionState>();
+            for (int i = 0; i < 4; i++)
             {
-                if (PositionState(row, col + 1) == thisState)
+                try
                 {
-                    utility += PlayerUtility(thisState, 10);
-                    if (PositionState(row, col + 2) == thisState)
-                    {
-                        utility += PlayerUtility(thisState, 100);
-                        if (PositionState(row, col + 3) == thisState)
-                        {
-                            utility += PlayerUtility(thisState, 100000);
-                        }
-                        else if (PositionState(row, col + 3) == Enums.PositionState.Free)
-                        {
-                            utility += PlayerUtility(thisState, 500);
-                        }
-                    }
-                    else if (PositionState(row, col + 2) == Enums.PositionState.Free &&
-                             PositionState(row, col + 3) == Enums.PositionState.Free)
-                    {
-                        utility += PlayerUtility(thisState, 200);
-                    }
+                    states.Add(PositionState(row, col + i));
+                }
+                catch (Exception)
+                {
+                    // ignore
                 }
             }
-            catch (Exception)
-            {
-                return utility;
-            }
-            return utility;
+            return CalculateUtilityFromStateList(states);
         }
         /////////////////////////////////////////////////////
 
