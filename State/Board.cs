@@ -224,27 +224,33 @@ namespace FourInARow.State
                 //just me and frees
                 if (me != 0 && opponent == 0)
                 {
-                    switch (me)
+                    if (me == 1)
                     {
-                        case 1:
-                            return PlayerUtility(Enums.PositionState.Me, 1);
-                        case 2:
-                            return PlayerUtility(Enums.PositionState.Me, 200);
-                        case 3:
-                            return PlayerUtility(Enums.PositionState.Me, 500);
+                        return PlayerUtility(Enums.PositionState.Me, 1);
+                    }
+                    else if (me == 2)
+                    {
+                        return PlayerUtility(Enums.PositionState.Me, 200);
+                    }
+                    else if (me == 3)
+                    {
+                        return PlayerUtility(Enums.PositionState.Me, 500);
                     }
                 }
                 //just opponent and frees
                 if (opponent != 0 && me == 0)
                 {
-                    switch (me)
+                    if (me == 1)
                     {
-                        case 1:
-                            return PlayerUtility(Enums.PositionState.Opponent, 1);
-                        case 2:
-                            return PlayerUtility(Enums.PositionState.Opponent, 200);
-                        case 3:
-                            return PlayerUtility(Enums.PositionState.Opponent, 500);
+                        return PlayerUtility(Enums.PositionState.Opponent, 1);
+                    }
+                    else if (me == 2)
+                    {
+                        return PlayerUtility(Enums.PositionState.Opponent, 200);
+                    }
+                    else if (me == 3)
+                    {
+                        return PlayerUtility(Enums.PositionState.Opponent, 500);
                     }
                 }
             }

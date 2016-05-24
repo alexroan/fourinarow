@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using FourInARow.State;
 
@@ -12,7 +13,7 @@ namespace FourInARow.Strategies
         /// <summary>
         ///     Max depth of the alpha beta implementation of minimax
         /// </summary>
-        private static readonly int _maxDepth = 7;
+        private static readonly int _maxDepth = 5;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="MinimaxStrategy" /> class.
