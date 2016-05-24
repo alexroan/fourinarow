@@ -12,7 +12,7 @@ namespace FourInARow.Strategies
         /// <summary>
         ///     Max depth of the alpha beta implementation of minimax
         /// </summary>
-        private static readonly int _maxDepth = 5;
+        private static readonly int _maxDepth = 7;
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="MinimaxStrategy" /> class.

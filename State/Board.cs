@@ -2,6 +2,7 @@ using System;
 using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization.Formatters;
 using System.Text;
 using FourInARow.Enums;
 
@@ -209,36 +210,57 @@ namespace FourInARow.State
         /////////////////UTILITY CALCULATORS///////////////////////
 
         /// <summary>
-        /// calculates the utility of a given list of states
+        /// Calculates the utility from state count.
         /// </summary>
-        /// <param name="states"></param>
+        /// <param name="free">The free.</param>
+        /// <param name="me">Me.</param>
+        /// <param name="opponent">The opponent.</param>
         /// <returns></returns>
-        public int CalculateUtilityFromStateList(List<PositionState> states)
+        public int CalculateUtilityFromStateCount(int free, int me, int opponent)
         {
-            var utility = 0;
-            var distinctStates = states.Distinct().ToList();
-            //Only one type of state occupies the spaces. Either a win, or all FREE
-            if (distinctStates.Count == 1)
+            //some frees
+            if (free != 0)
             {
-                if (distinctStates[0] != Enums.PositionState.Free)
-                    utility = PlayerUtility(distinctStates[0], 100000);
-            }
-            //if 2 types of states are present
-            else if (distinctStates.Count == 2)
-            {
-                //if any are free then 4 in a row can be made. How close?
-                if (distinctStates.Contains(Enums.PositionState.Free))
+                //just me and frees
+                if (me != 0 && opponent == 0)
                 {
-                    var playerStates = states.FindAll(s => s != Enums.PositionState.Free);
-                    if (playerStates.Count == 1)
-                        utility = PlayerUtility(playerStates[0], 1);
-                    else if (playerStates.Count == 2)
-                        utility = PlayerUtility(playerStates[0], 200);
-                    else if (playerStates.Count == 3)
-                        utility = PlayerUtility(playerStates[0], 500);
+                    switch (me)
+                    {
+                        case 1:
+                            return PlayerUtility(Enums.PositionState.Me, 1);
+                        case 2:
+                            return PlayerUtility(Enums.PositionState.Me, 200);
+                        case 3:
+                            return PlayerUtility(Enums.PositionState.Me, 500);
+                    }
+                }
+                //just opponent and frees
+                if (opponent != 0 && me == 0)
+                {
+                    switch (me)
+                    {
+                        case 1:
+                            return PlayerUtility(Enums.PositionState.Opponent, 1);
+                        case 2:
+                            return PlayerUtility(Enums.PositionState.Opponent, 200);
+                        case 3:
+                            return PlayerUtility(Enums.PositionState.Opponent, 500);
+                    }
                 }
             }
-            return utility;
+            //some me's
+            else if (me != 0)
+            {
+                //just me's = WIN! me and opponents = dead 4
+                return opponent == 0 ? PlayerUtility(Enums.PositionState.Me, 100000) : 0;
+            }
+            //some opponents
+            else if (opponent != 0)
+            {
+                //just opponents = LOSS! opponents and me = dead 4
+                return me == 0 ? PlayerUtility(Enums.PositionState.Opponent, 100000) : 0;
+            }
+            return 0;
         }
 
         /// <summary>
@@ -249,19 +271,20 @@ namespace FourInARow.State
         /// <returns></returns>
         private int DiagRightFromBottomUtility(int row, int col)
         {
-            List<PositionState> states = new List<PositionState>();
+            int freeCount = 0;
+            int meCount = 0;
+            int opponentCount = 0;
             for (int i = 0; i < 4; i++)
             {
-                try
-                {
-                    states.Add(PositionState(row - i, col + i));
-                }
-                catch (Exception)
-                {
-                    // ignore
-                }
+                PositionState state = PositionState(row - i, col + i);
+                if (state == Enums.PositionState.Free)
+                    freeCount++;
+                else if (state == Enums.PositionState.Me)
+                    meCount++;
+                else if (state == Enums.PositionState.Opponent)
+                    opponentCount++;
             }
-            return CalculateUtilityFromStateList(states);
+            return CalculateUtilityFromStateCount(freeCount, meCount, opponentCount);
         }
 
         /// <summary>
@@ -272,19 +295,20 @@ namespace FourInARow.State
         /// <returns></returns>
         private int DiagLeftFromBottomUtility(int row, int col)
         {
-            List<PositionState> states = new List<PositionState>();
+            int freeCount = 0;
+            int meCount = 0;
+            int opponentCount = 0;
             for (int i = 0; i < 4; i++)
             {
-                try
-                {
-                    states.Add(PositionState(row - i, col - i));
-                }
-                catch (Exception)
-                {
-                    // ignore
-                }
+                PositionState state = PositionState(row - i, col - i);
+                if (state == Enums.PositionState.Free)
+                    freeCount++;
+                else if (state == Enums.PositionState.Me)
+                    meCount++;
+                else if (state == Enums.PositionState.Opponent)
+                    opponentCount++;
             }
-            return CalculateUtilityFromStateList(states);
+            return CalculateUtilityFromStateCount(freeCount, meCount, opponentCount);
         }
 
         /// <summary>
@@ -295,19 +319,20 @@ namespace FourInARow.State
         /// <returns></returns>
         private int VertFromBottomUtility(int row, int col)
         {
-            List<PositionState> states = new List<PositionState>();
+            int freeCount = 0;
+            int meCount = 0;
+            int opponentCount = 0;
             for (int i = 0; i < 4; i++)
             {
-                try
-                {
-                    states.Add(PositionState(row - i, col));
-                }
-                catch (Exception)
-                {
-                    // ignore
-                }
+                PositionState state = PositionState(row - i, col);
+                if (state == Enums.PositionState.Free)
+                    freeCount++;
+                else if (state == Enums.PositionState.Me)
+                    meCount++;
+                else if (state == Enums.PositionState.Opponent)
+                    opponentCount++;
             }
-            return CalculateUtilityFromStateList(states);
+            return CalculateUtilityFromStateCount(freeCount, meCount, opponentCount);
         }
 
         /// <summary>
@@ -318,19 +343,20 @@ namespace FourInARow.State
         /// <returns></returns>
         private int HorizontalFromBottomLeftUtility(int row, int col)
         {
-            List<PositionState> states = new List<PositionState>();
+            int freeCount = 0;
+            int meCount = 0;
+            int opponentCount = 0;
             for (int i = 0; i < 4; i++)
             {
-                try
-                {
-                    states.Add(PositionState(row, col + i));
-                }
-                catch (Exception)
-                {
-                    // ignore
-                }
+                PositionState state = PositionState(row, col+i);
+                if (state == Enums.PositionState.Free)
+                    freeCount++;
+                else if (state == Enums.PositionState.Me)
+                    meCount++;
+                else if (state == Enums.PositionState.Opponent)
+                    opponentCount++;
             }
-            return CalculateUtilityFromStateList(states);
+            return CalculateUtilityFromStateCount(freeCount, meCount, opponentCount);
         }
         /////////////////////////////////////////////////////
 
