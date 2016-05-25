@@ -24,6 +24,8 @@ namespace FourInARow.Strategies
         /// </summary>
         protected int MaxDepth { get; set; }
 
+        protected int Round { get; set; }
+
         /// <summary>
         ///     Generates next move
         /// </summary>
@@ -32,6 +34,11 @@ namespace FourInARow.Strategies
         public virtual int NextMove(Board board)
         {
             throw new NotImplementedException();
+        }
+
+        public virtual void UpdateRound(int round)
+        {
+            Round = round;
         }
 
         /// <summary>

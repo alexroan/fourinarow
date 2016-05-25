@@ -16,10 +16,26 @@ namespace FourInARow.Strategies
         private static readonly int _maxDepth = 5;
 
         /// <summary>
+        ///     Max depth after 21 moves have gone
+        /// </summary>
+        private static readonly int _maxDepthAfter21Moves = 7;
+
+        /// <summary>
         ///     Initializes a new instance of the <see cref="MinimaxStrategy" /> class.
         /// </summary>
         public AlphaBetaMinimaxStrategy() : base(_maxDepth)
         {
+        }
+
+        /// <summary>
+        ///     alters the depth after 21 moves
+        /// </summary>
+        /// <param name="round"></param>
+        public override void UpdateRound(int round)
+        {
+            base.UpdateRound(round);
+            if (round >= 21 && MaxDepth != _maxDepthAfter21Moves)
+                MaxDepth = _maxDepthAfter21Moves;
         }
 
         /// <summary>

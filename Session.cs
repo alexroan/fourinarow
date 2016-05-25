@@ -65,6 +65,9 @@ namespace FourInARow
                                                     .ToArray());
                                         board.Update(boardArray);
                                         break;
+                                    case "round":
+                                        strategy.UpdateRound(int.Parse(parts[3]));
+                                        break;
                                 }
                                 break;
                         }
