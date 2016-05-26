@@ -30,13 +30,13 @@ namespace FourInARow.Strategies
         public override void UpdateRound(int round)
         {
             base.UpdateRound(round);
-            if (round >= 7 && round < 14)
+            if (round >= 9 && round < 16)
                 MaxDepth = Depths[1];
-            else if (round >= 14 && round < 21)
+            else if (round >= 16 && round < 23)
                 MaxDepth = Depths[2];
-            else if (round >= 21 && round < 28)
+            else if (round >= 23 && round < 30)
                 MaxDepth = Depths[3];
-            else if (round >= 28)
+            else if (round >= 30)
                 MaxDepth = Depths[4];
             }
 
