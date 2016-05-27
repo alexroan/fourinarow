@@ -32,11 +32,9 @@ namespace FourInARow.Strategies
             base.UpdateRound(round);
             if (round >= 9 && round < 21)
                 MaxDepth = Depths[1];
-            else if (round >= 21 && round < 30)
+            else if (round >= 21)
                 MaxDepth = Depths[2];
-            else if (round >= 30)
-                MaxDepth = Depths[3];
-            }
+        }
 
         /// <summary>
         ///     returns the next move
