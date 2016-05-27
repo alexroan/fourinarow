@@ -14,7 +14,7 @@ namespace FourInARow.Strategies
         /// <summary>
         ///     Different Depths for different stages
         /// </summary>
-        private static readonly int[] Depths = {5, 7, 9, 11, 13};
+        private static readonly int[] Depths = {5, 7, 9};
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="MinimaxStrategy" /> class.
@@ -30,14 +30,12 @@ namespace FourInARow.Strategies
         public override void UpdateRound(int round)
         {
             base.UpdateRound(round);
-            if (round >= 9 && round < 16)
+            if (round >= 9 && round < 21)
                 MaxDepth = Depths[1];
-            else if (round >= 16 && round < 23)
+            else if (round >= 21 && round < 30)
                 MaxDepth = Depths[2];
-            else if (round >= 23 && round < 30)
-                MaxDepth = Depths[3];
             else if (round >= 30)
-                MaxDepth = Depths[4];
+                MaxDepth = Depths[3];
             }
 
         /// <summary>
