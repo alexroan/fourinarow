@@ -62,9 +62,10 @@ namespace FourInARow.Strategies
             
             for (int i = 0; i < 7; i++)
             {
-                var child = new Board(state);
-                if (child.PlaceMove(i))
+                if (state.CanPlaceMovePosition(i) != -1)
                 {
+                    var child = new Board(state);
+                    child.PlaceMove(i);
                     if (IsTerminal(child))
                         return i;
                     var possibleMaxValue = MinValue(child, 0, int.MinValue, int.MaxValue);
@@ -106,12 +107,12 @@ namespace FourInARow.Strategies
                 return state.Utility();
             }
             currentDepth++;
-            
             for (int i = 0; i < 7; i++)
             {
-                var child = new Board(state);
-                if (child.PlaceMove(i))
+                if (state.CanPlaceMovePosition(i) != -1)
                 {
+                    var child = new Board(state);
+                    child.PlaceMove(i);
                     var minval = MinValue(child, currentDepth, alpha, beta);
                     if (minval > alpha)
                         alpha = minval;
@@ -140,9 +141,10 @@ namespace FourInARow.Strategies
             
             for (int i = 0; i < 7; i++)
             {
-                var child = new Board(state);
-                if (child.PlaceMove(i))
+                if (state.CanPlaceMovePosition(i) != -1)
                 {
+                    var child = new Board(state);
+                    child.PlaceMove(i);
                     var maxval = MaxValue(child, currentDepth, alpha, beta);
                     if (maxval < beta)
                         beta = maxval;

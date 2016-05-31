@@ -78,7 +78,7 @@ namespace FourInARow.State
         /// </summary>
         /// <param name="col">The col.</param>
         /// <returns>-1= can't move, any other is the position it will move to</returns>
-        private int CanPlaceMovePosition(int col)
+        public int CanPlaceMovePosition(int col)
         {
             var openPosition = -1;
             for (var i = 5; i >= 0; i--)
