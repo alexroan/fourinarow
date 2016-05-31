@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using FourInARow.State;
@@ -73,8 +74,12 @@ namespace FourInARow
                         }
                         break;
                     case "action":
+                        //Stopwatch watch = new Stopwatch();
+                        //watch.Start();
                         var move = strategy.NextMove(board);
+                        //watch.Stop();
                         Console.WriteLine("place_disc {0}", move);
+                        //Console.WriteLine(watch.ElapsedMilliseconds);
                         break;
                 }
             }

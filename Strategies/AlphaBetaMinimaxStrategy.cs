@@ -59,16 +59,20 @@ namespace FourInARow.Strategies
             var maxValue = int.MinValue;
             //the next move
             var highestValueAction = -1;
-            foreach (var childKey in childKeys)
+            
+            for (int i = 0; i < 7; i++)
             {
-                var thisState = children[childKey];
-                if (IsTerminal(thisState))
-                    return childKey;
-                var possibleMaxValue = MinValue(thisState, 0, int.MinValue, int.MaxValue);
-                if (possibleMaxValue > maxValue)
+                var child = new Board(state);
+                if (child.PlaceMove(i))
                 {
-                    highestValueAction = childKey;
-                    maxValue = possibleMaxValue;
+                    if (IsTerminal(child))
+                        return i;
+                    var possibleMaxValue = MinValue(child, 0, int.MinValue, int.MaxValue);
+                    if (possibleMaxValue > maxValue)
+                    {
+                        highestValueAction = i;
+                        maxValue = possibleMaxValue;
+                    }
                 }
             }
 
@@ -102,13 +106,18 @@ namespace FourInARow.Strategies
                 return state.Utility();
             }
             currentDepth++;
-            foreach (var child in Children(state).Values)
+            
+            for (int i = 0; i < 7; i++)
             {
-                var minval = MinValue(child, currentDepth, alpha, beta);
-                if (minval > alpha)
-                    alpha = minval;
-                if (alpha >= beta)
-                    return alpha;
+                var child = new Board(state);
+                if (child.PlaceMove(i))
+                {
+                    var minval = MinValue(child, currentDepth, alpha, beta);
+                    if (minval > alpha)
+                        alpha = minval;
+                    if (alpha >= beta)
+                        return alpha;
+                }
             }
             return alpha;
         }
@@ -128,13 +137,18 @@ namespace FourInARow.Strategies
                 return state.Utility();
             }
             currentDepth++;
-            foreach (var child in Children(state).Values)
+            
+            for (int i = 0; i < 7; i++)
             {
-                var maxval = MaxValue(child, currentDepth, alpha, beta);
-                if (maxval < beta)
-                    beta = maxval;
-                if (beta <= alpha)
-                    return beta;
+                var child = new Board(state);
+                if (child.PlaceMove(i))
+                {
+                    var maxval = MaxValue(child, currentDepth, alpha, beta);
+                    if (maxval < beta)
+                        beta = maxval;
+                    if (beta <= alpha)
+                        return beta;
+                }
             }
             return beta;
         }
