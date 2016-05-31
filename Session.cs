@@ -74,12 +74,12 @@ namespace FourInARow
                         }
                         break;
                     case "action":
-                        Stopwatch watch = new Stopwatch();
-                        watch.Start();
+                        //Stopwatch watch = new Stopwatch();
+                        //watch.Start();
                         var move = strategy.NextMove(board);
-                        watch.Stop();
+                        //watch.Stop();
                         Console.WriteLine("place_disc {0}", move);
-                        Console.WriteLine(watch.ElapsedMilliseconds);
+                        //Console.WriteLine(watch.ElapsedMilliseconds);
                         break;
                 }
             }
